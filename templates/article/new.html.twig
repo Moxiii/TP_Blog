@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel Article{% endblock %}
+
+{% block body %}
+    <h1>Nouvel Article</h1>
+    <form id="article-form" method="post" action="{{ path('nouvel_article') }}">
+        <label for="titre">Titre :</label>
+        <input type="text" id="titre" name="titre"><br>
+        <label for="text">Description :</label>
+        <textarea id="text" name="text"></textarea><br>
+        <button type="submit">Envoyer</button>
+    </form>
+    <script>
+        document.getElementById('article-form').addEventListener('submit', function(event) {
+            var titre = document.getElementById('titre').value;
+            var text = document.getElementById('text').value;
+
+            console.log('Titre: ' + titre);
+            console.log('Text: ' + text);
+        });
+    </script>
+{% endblock %}
