@@ -15,7 +15,7 @@
     {% endif %}
     <ul>
         {% for article in articles %}
-            <li>{{ article.Titre }} par {{ article.Auteur }} : {{ article.Text }}</li>
+            <li>{{ article.Titre }} par {{ article.Auteur }} : {{ article.Text }} </br> <a href="{{ path('comment_add', {'id': article.id}) }}">Voir/ajouter un commentaire</a></li>
 
 
         {% endfor %}

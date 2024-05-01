@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<h2>{{ article.titre }}</h2>
+<p>{{ article.text }}</p>
+
+
+<h3>Commentaires :</h3>
+{% if commentaires is not empty %}
+    <ul>
+        {% for commentaire in commentaires %}
+            <li>{{ commentaire.texte }} - {{ commetaire.auteur }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Aucun commentaire pour le moment.</p>
+{% endif %}
+
+{# Lien pour ajouter un commentaire #}
+{% if app.user %}
+<form method="post" action="{{ path('comment_add', {'id': article.id}) }}">
+    <textarea name="text" rows="4" cols="50"></textarea><br>
+    <button type="submit">Ajouter un commentaire</button>
+</form>
+{% else %}
+    <p>Connectez-vous pour ajouter un commentaire.</p>
+{% endif %}
+{% endblock %}
