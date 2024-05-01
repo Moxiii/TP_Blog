@@ -3,43 +3,30 @@
 namespace App\Entity;
 
 use App\Repository\CommentaireRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CommentaireRepository::class)
- */
+#[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $auteur;
+    #[ORM\Column(length: 255)]
+    private ?string $auteur = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $content;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
 
-    // Autres propriétés et méthodes...
+    #[ORM\Column(length: 255)]
+    private ?string $texte = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="commentaire")
-     */
-    private $articles;
-
-    public function __construct()
-    {
-        $this->articles = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Article $article = null;
 
     public function getId(): ?int
     {
@@ -51,51 +38,45 @@ class Commentaire
         return $this->auteur;
     }
 
-    public function setAuteur(string $auteur): self
+    public function setAuteur(string $auteur): static
     {
         $this->auteur = $auteur;
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->content;
+        return $this->date;
     }
 
-    public function setContent(string $content): self
+    public function setDate(\DateTimeInterface $date): static
     {
-        $this->content = $content;
+        $this->date = $date;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Article[]
-     */
-    public function getArticles(): Collection
+    public function getTexte(): ?string
     {
-        return $this->articles;
+        return $this->texte;
     }
 
-    public function addArticle(Article $article): self
+    public function setTexte(string $texte): static
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles[] = $article;
-            $article->setCommentaire($this);
-        }
+        $this->texte = $texte;
 
         return $this;
     }
 
-    public function removeArticle(Article $article): self
+    public function getArticle(): ?Article
     {
-        if ($this->articles->removeElement($article)) {
-            // set the owning side to null (unless already changed)
-            if ($article->getCommentaire() === $this) {
-                $article->setCommentaire(null);
-            }
-        }
+        return $this->article;
+    }
+
+    public function setArticle(?Article $article): static
+    {
+        $this->article = $article;
 
         return $this;
     }

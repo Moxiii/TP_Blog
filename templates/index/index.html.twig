@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}Acceuil{% endblock %}
 
 {% block body %}
 <style>
@@ -9,12 +9,16 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
+    <h1>Articles</h1>
+    {% if is_granted('ROLE_REDACTEUR') %}
+    <a href="{{ path('nouvel_article') }}">Ajouter un nouvel article </a>
+    {% endif %}
     <ul>
-        <li>Your controller at <code>/app/src/Controller/IndexController.php</code></li>
-        <li>Your template at <code>/app/templates/index/index.html.twig</code></li>
+        {% for article in articles %}
+            <li>{{ article.Titre }} par {{ article.Auteur }} : {{ article.Text }}</li>
+
+
+        {% endfor %}
     </ul>
 </div>
 {% endblock %}
